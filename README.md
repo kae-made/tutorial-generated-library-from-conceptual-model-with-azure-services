@@ -63,4 +63,91 @@ First of all, building a conceptual model by BridgePoint based on subject matter
 To learn how to use BridgePoint, please refere to "[ビジネスをモデル化する ～ BridgePoint を使ってみよう](https://note.com/kae_made/n/n26c1d91e686f)".  
 I have released training tutorials to build better modes, please refer to "[概念モデリングチュートリアル集](https://note.com/kae_made/m/m737f9295692f)".  
 
+If you have not enought conceptual modeling skill, please use [sample model](./SampleModel/ADTTestModel/gen/code_generation/ADTTestModel.sql).
+
 ### 2. Generate Twin Model by DTDL  
+Use [DTDL Generator](https://github.com/kae-made/dtdl-schema-generator) to generate Twin Models from Conceptual Model constructed by BridgePoint.  
+This generator can generate DTDL file for both Twin Graph on Azure Digital Twins and IoT Plug & Play (IoTPnP) Model from same conceptual model.  
+When you write following text on the description of conceptual information class,  
+> @iotpnp
+
+The generator generate 2 DTDL files from the conceptual information class. If the name and key letter of the conceptual information class is '<i>Device</i>','<i>D</i>' and specified namespace is '<i>dtmi:com:company</i>', generated files are as follows.  
+- <i>Device</i>.json
+    - @id - <i>dtmi:com:company</i>:<i>D</i>;1
+- <i>Device</i>_iotpnp.json
+    - @id - <i>dtmi:com:company</i>:<i>D</i>:iotpnp;1
+
+You can control how property of conceptual information class are generated as DTDL by coloring for the property.  
+When you write following text on the description of a property which you'd like to control.
+> @iotpnp(deviceid,exclude)
+
+Generator generates DTDL <b>Property</b> only on Twin Graph side because Azure IoT Hub automatically put Device Id into telemetry message from IoT Device to the service side, so the IoT device application doesn't need to send the device id.  
+
+Next, when you write
+> @iotpnp(telemetry) 
+
+, Twin Graph side generates as <b>Property</b>, IoT PnP side generates as <b>Telemetry</b>. By this feature, you can realize situation described on https://learn.microsoft.com/azure/digital-twins/how-to-ingest-iot-hub-data .
+
+When you write
+> @itopnp(readonly)  
+, The property is generated as <b>Property</b> which's '<b>writable</b>' value is false. On the IoT PnP side, this means that the <b>Property</b> is 'Device Twin Reported Property'.
+
+You can write 'exclude' only,
+> @iotpnp(exclude)
+The propery is generared as <b>Property</b> only on Twin Graph side.
+
+Command line to generate DTDL is as follows.
+> ConsoleAppDTDLGenerator.exe --metamodel <i>BridgePoint</i>\tools\mc\schema\sql\xtumlmc_schema.sql --base-datatype <i>BridgePoint</i>\tools\mc\schema\Globals.xtuml --domainmodel "<i>BridgePoint</i>\workspace\<i>ADTTestModel</i>\gen\code_generation\<i>ADTTestModel</i>.sql" --dtdlns dtmi:com:<i>company</i> --dtdlver <i>1</i> --use-keylett false --gen-folder "<i>WorkingDir</i>\dtdl"
+
+### 3. Generate IoT Device Application from IoT PnP DTDL file.  
+By [DTDL IoT App Generator](https://github.com/kae-made/dtdl-iot-app-generator), you can generate IoT Device Application C# code. Generated code has following features which are defined by IoT PnP DTDL file.  
+- Connecting to IoT Hub.
+    - Use SAS key or X509 certificate
+    - Use [Device Provisioning Service](https://learn.microsoft.com/azure/iot-dps/)
+- Data structure for telemetry, desired properties and reported properties.
+- Send telemetry by repeat at regular intervals or on demand.
+- Receive handler for Direct Method invocation, cloud to device message and desired properties updating  
+
+Generated application uses https://github.com/kae-made/azure-iot-hub-device-app-framework as application framework. this framework provides common logic for IoT Device and IoT Edge implementation.
+
+After generared application template, you need to add telemetry data preparetion logic into it.  
+
+Please see https://github.com/kae-made/dtdl-iot-app-generator/blob/main/HowToUse.md to know how to use this generator.  
+
+### 4. Generate Domain Model C# library  
+Using https://github.com/kae-made/domainmodel-code-generator-csharp, you can get Domain Model C# library code that consists from data structure and behavior whichi are defined in conceptual model.
+Command line to generate code set is
+> ConsoleAppCshaprGenerator.exe --metamodel <i>BridgePoint</i>\tools\mc\schema\sql\xtumlmc_schema.sql --base-datatype <i>BridgePoint</i>\tools\mc\schema\Globals.xtuml --domainmodel "<i>BridgePoint</i>\workspace\<i>ADTTestModel</i>\gen\code_generation\<i>ADTTestModel</i>.sql"  --project <i>ADTTestModel</i> --dotnetver net6.0 --gen-folder "<i>gen_folder</i>" --action-gen true  --adoptor-gen true --azuredigitaltwins dtmi:com:<i>company</i>;1  --azure-iot-hub true
+
+Before generating, you'd better verify your conceptual model using BridgePoint's verifier. It is impossible to generate valid code from a model that does not correctly represent the real business world.  
+Generated code can be executed by https://github.com/kae-made/domain-model-csharp-adaptor-samples and should be verified not only by BridgePoint Verifier but also by this tool.  
+For your information, you can also use https://github.com/kae-made/domain-model-csharp-adaptor-samples/tree/main/UIDomainAdaptorSamples/WebAPIAppViewer published from same repository to deploy as Web Application.   
+
+Generated code uses https://github.com/kae-made/state-machine-framework and https://github.com/kae-made/charp-code-generation-framework as application framework.  
+
+### 5. Upload generated Twin Models  
+Upload the DTDL files generated in Step 2. to the Azure Digital Twins instance. You can use [Azure Digital Twins Explorer](https://learn.microsoft.com/azure/digital-twins/how-to-use-azure-digital-twins-explorer) or [WpfAppDTDLParser](https://github.com/kae-made/magazine-iot-contents/tree/main/sources-service-on-device/WpfAppDTDLParser).  
+
+### 6. Construct initial Twin Graph  
+Construct initial Twin Graph by [Azure Digital Twins Explorer](https://learn.microsoft.com/azure/digital-twins/how-to-use-azure-digital-twins-explorer) or [WpfAppATDOperation](https://github.com/kae-made/magazine-iot-contents/tree/main/sources-service-on-device/WpfAppADTOperation).  
+It is very difficult to operate Twin Graph to maintain the constraints of property values and relationships defined in the conceptual model that it is recommended to construct Twin Graph state with the latter too or execute the generated Domain Model C# library.  
+
+### 7. Deploy and Setting Azure Services.  
+Please refer Microsoft Docs contents or "[Azure の最新機能で IoT を改めてやってみる](https://note.com/kae_made/m/m5f5f32fee80b)" for following work...
+
+- Deploy IoT Hub.
+    - Create message route for d2c message
+    - Create message route for device twins update
+- Clone https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor
+- Deploy ReceiveD2CToTwinGraph
+    - Bind to d2c message route.
+    - This function operates Twin Graph so access permissions to Twin Graph must be granted
+- Deploy ReceiveReportedPropertiesToTwinGraph
+    - Bind to device twins update message route
+    - This function operates Twin Graph so access permissions to Twin Graph must be granted
+- Build DomainModelExecutor and TelemetryNotified and deploy them
+    - Open AzureDigitalTwinsAdaptorForCsharpFramework.sln
+    - Add generated Domain Model C# library project as project reference 
+    - Deploy DomainModelExecutor
+    - Deploy TelemetryNotified
+
