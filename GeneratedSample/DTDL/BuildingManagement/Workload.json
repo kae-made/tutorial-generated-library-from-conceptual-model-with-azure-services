@@ -1,0 +1,84 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:kae_made:BuildingManagement:WL;1",
+  "@type": "Interface",
+  "comment": "auto generated - generator version=0.0.1",
+  "displayName": "Workload",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "WorkloadId",
+      "schema": "string",
+      "comment": "@I0,PR7_Contract_WL"
+    },
+    {
+      "@type": "Property",
+      "name": "TargetRoomId",
+      "schema": "string",
+      "comment": "@R5"
+    },
+    {
+      "@type": "Property",
+      "name": "CurrentStatus",
+      "schema": {
+        "@type": "Enum",
+        "valueSchema": "string",
+        "displayName": "WorkloadState",
+        "enumValues": [
+          {
+            "name": "Requesting",
+            "enumValue": "Requesting"
+          },
+          {
+            "name": "Assigned",
+            "enumValue": "Assigned"
+          },
+          {
+            "name": "Scheduled",
+            "enumValue": "Scheduled"
+          },
+          {
+            "name": "Supported",
+            "enumValue": "Supported"
+          },
+          {
+            "name": "Completed",
+            "enumValue": "Completed"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Property",
+      "name": "OccurrenceDate",
+      "schema": "dateTime"
+    },
+    {
+      "@type": "Property",
+      "name": "AssignedDate",
+      "schema": "dateTime"
+    },
+    {
+      "@type": "Property",
+      "name": "PlannedDate",
+      "schema": "dateTime"
+    },
+    {
+      "@type": "Property",
+      "name": "StartDate",
+      "schema": "dateTime"
+    },
+    {
+      "@type": "Property",
+      "name": "EndDate",
+      "schema": "dateTime"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "dtmi:com:kae_made:BuildingManagement:R5_Target_R;1",
+      "name": "R5_Target_R",
+      "maxMultiplicity": 1,
+      "target": "dtmi:com:kae_made:BuildingManagement:R;1"
+    }
+  ]
+}

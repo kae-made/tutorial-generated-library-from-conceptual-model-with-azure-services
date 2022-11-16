@@ -1,0 +1,35 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:kae_made:BuildingManagement:WA;1",
+  "@type": "Interface",
+  "comment": "auto generated - generator version=0.0.1",
+  "displayName": "Workload Assignment",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "WorkloadId",
+      "schema": "string",
+      "comment": "@I0,R7"
+    },
+    {
+      "@type": "Property",
+      "name": "CustomerEngineerId",
+      "schema": "string",
+      "comment": "@I0,R7"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "dtmi:com:kae_made:BuildingManagement:R7_Contract_WL;1",
+      "name": "R7_Contract_WL",
+      "maxMultiplicity": 1,
+      "target": "dtmi:com:kae_made:BuildingManagement:WL;1"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "dtmi:com:kae_made:BuildingManagement:R7_ResponsiblePerson_CE;1",
+      "name": "R7_ResponsiblePerson_CE",
+      "maxMultiplicity": 1,
+      "target": "dtmi:com:kae_made:BuildingManagement:CE;1"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:kae_made:BuildingManagement:AC:iotpnp;1",
+  "@type": "Interface",
+  "comment": "target-dtdlid='dtmi:com:kae_made:BuildingManagement:AC;1'\\nauto generated - generator version=0.0.1",
+  "displayName": "Air Conditioner",
+  "description": "Please see description of class:'Air Conditioner'",
+  "contents": [
+    {
+      "@type": "Telemetry",
+      "name": "PowerState",
+      "schema": "boolean",
+      "description": "Please see description of attribute:'PowerState' of class:'Air Conditioner'"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "PowerWatts",
+      "schema": "double",
+      "description": "Please see description of attribute:'PowerWatts' of class:'Air Conditioner'"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "CurrentState",
+      "schema": {
+        "@type": "Enum",
+        "valueSchema": "string",
+        "displayName": "EquipmentsState",
+        "enumValues": [
+          {
+            "name": "Healthy",
+            "enumValue": "Healthy"
+          },
+          {
+            "name": "OutOfOrder",
+            "enumValue": "OutOfOrder"
+          }
+        ]
+      },
+      "description": "Please see description of attribute:'CurrentState' of class:'Air Conditioner'"
+    },
+    {
+      "@type": "Command",
+      "name": "Execute",
+      "request": {
+        "name": "payload",
+        "schema": {
+          "@type": "Object",
+          "fields": [
+            {
+              "name": "command",
+              "schema": "string"
+            }
+          ]
+        }
+      },
+      "response": {
+        "name": "status",
+        "schema": "integer",
+        "description": "HTTP response status code."
+      },
+      "displayName": "Execute"
+    }
+  ]
+}

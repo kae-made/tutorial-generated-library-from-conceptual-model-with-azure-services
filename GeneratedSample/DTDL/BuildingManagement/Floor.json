@@ -1,0 +1,34 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:kae_made:BuildingManagement:F;1",
+  "@type": "Interface",
+  "comment": "auto generated - generator version=0.0.1",
+  "displayName": "Floor",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "BuildingId",
+      "schema": "string",
+      "comment": "@I1,R1"
+    },
+    {
+      "@type": "Property",
+      "name": "FloorNo",
+      "schema": "integer",
+      "comment": "@I1"
+    },
+    {
+      "@type": "Property",
+      "name": "FloorId",
+      "schema": "string",
+      "comment": "@I0,PR2_F"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "dtmi:com:kae_made:BuildingManagement:R1_B;1",
+      "name": "R1_B",
+      "maxMultiplicity": 1,
+      "target": "dtmi:com:kae_made:BuildingManagement:B;1"
+    }
+  ]
+}

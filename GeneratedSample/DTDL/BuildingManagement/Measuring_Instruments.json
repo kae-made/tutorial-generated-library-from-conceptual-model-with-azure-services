@@ -1,0 +1,109 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:com:kae_made:BuildingManagement:MI;1",
+  "@type": "Interface",
+  "comment": "@iotdevice - \\nauto generated - generator version=0.0.1",
+  "displayName": "Measuring Instruments",
+  "description": "Please see description of class:'Measuring Instruments'",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "MeasuringInstId",
+      "schema": "string",
+      "comment": "@I0,PR6_MI,@deviceid",
+      "description": "Please see description of attribute:'MeasuringInstId' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Property",
+      "name": "TargetRoomId",
+      "schema": "string",
+      "comment": "@R3",
+      "description": "Please see description of attribute:'TargetRoomId' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Property",
+      "name": "ModelName",
+      "schema": "string",
+      "description": "Please see description of attribute:'ModelName' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Property",
+      "name": "Environment",
+      "schema": {
+        "@type": "Object",
+        "displayName": "EnvironmentPhysicalQuantities",
+        "fields": [
+          {
+            "name": "Temperature",
+            "schema": "double"
+          },
+          {
+            "name": "Humidity",
+            "schema": "double"
+          },
+          {
+            "name": "AtmosphericPressure",
+            "schema": "double"
+          },
+          {
+            "name": "CO2Concentration",
+            "schema": "double"
+          },
+          {
+            "name": "Brightness",
+            "schema": "double"
+          },
+          {
+            "name": "MeasuredTime",
+            "schema": "dateTime"
+          }
+        ]
+      },
+      "description": "Please see description of attribute:'Environment' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Property",
+      "name": "RequestInterval",
+      "schema": "integer"
+    },
+    {
+      "@type": "Property",
+      "name": "CurrentInterval",
+      "schema": "integer",
+      "description": "Please see description of attribute:'CurrentInterval' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Property",
+      "name": "DeviceStatus",
+      "schema": "string",
+      "description": "Please see description of attribute:'DeviceStatus' of class:'Measuring Instruments'"
+    },
+    {
+      "@type": "Command",
+      "name": "Start",
+      "response": {
+        "name": "status",
+        "schema": "integer",
+        "description": "HTTP response status code."
+      },
+      "displayName": "Start"
+    },
+    {
+      "@type": "Command",
+      "name": "Stop",
+      "response": {
+        "name": "status",
+        "schema": "integer",
+        "description": "HTTP response status code."
+      },
+      "displayName": "Stop"
+    },
+    {
+      "@type": "Relationship",
+      "@id": "dtmi:com:kae_made:BuildingManagement:R3_Measuaring_R;1",
+      "name": "R3_Measuaring_R",
+      "maxMultiplicity": 1,
+      "target": "dtmi:com:kae_made:BuildingManagement:R;1"
+    }
+  ]
+}
