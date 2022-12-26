@@ -43,15 +43,15 @@ The name of the Azure Functions are as follows.
 
 ![Name of Azure Functions](./images/name-of-functions.svg)
 
-All Azure Functions are published from Github.  
-- ReceiveD2CToTwinGraph - [ReceiveD2CToTwinGraph.cs](https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor/blob/main/AzureDigitalTwinsAdaptorSamples/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder/ReceiveD2CToTwinGraph.cs)
+All Azure Functions are published from [Github](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework).  
+- ReceiveD2CToTwinGraph - [ReceiveD2CToTwinGraph.cs](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder/ReceiveD2CToTwinGraph.cs)
     - Completely independent formally of indivisual Conceptual Model
-- ReceiveReportedPropertiesToTwinGraph - [ReceiveReportedPropertiesToTwinGraph.cs](https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor/blob/main/AzureDigitalTwinsAdaptorSamples/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder/ReceiveReportedPropertiesToTwinGraph.cs)
+- ReceiveReportedPropertiesToTwinGraph - [ReceiveReportedPropertiesToTwinGraph.cs](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder/ReceiveReportedPropertiesToTwinGraph.cs)
     - Completely independent formally of indivisual Conceptual Model
-- DomainModelExecutor - [DomainModelExecutor.cs](https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor/blob/main/AzureDigitalTwinsAdaptorSamples/AzureDigitalTwinsAdaptorForCsharpFramework/DomainModelExecutor.cs)
+- DomainModelExecutor - [DomainModelExecutor.cs](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/AzureDigitalTwinsAdaptorForCsharpFramework/DomainModelExecutor.cs)
     - The code itself is formally independent of individual conceptual models.
     - Run with domain model C# code libary automatically genenerated from conceptual model. 
-- TelemetryNotified - [TelemetryNotified.cs](https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor/blob/main/AzureDigitalTwinsAdaptorSamples/AzureDigitalTwinsAdaptorForCsharpFramework/TelemetryNotified.cs)
+- TelemetryNotified - [TelemetryNotified.cs](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/AzureDigitalTwinsAdaptorForCsharpFramework/TelemetryNotified.cs)
     - The code itself is formally independent of individual conceptual models.
     - Run with domain model C# code libary automatically genenerated from conceptual model. 
 
@@ -89,7 +89,7 @@ Next, when you write
 , Twin Graph side generates as <b>Property</b>, IoT PnP side generates as <b>Telemetry</b>. By this feature, you can realize situation described on https://learn.microsoft.com/azure/digital-twins/how-to-ingest-iot-hub-data .
 
 When you write
-> @itopnp(readonly)  
+> @iotpnp(readonly)  
 , The property is generated as <b>Property</b> which's '<b>writable</b>' value is false. On the IoT PnP side, this means that the <b>Property</b> is 'Device Twin Reported Property'.
 
 You can write 'exclude' only,
@@ -138,16 +138,23 @@ Please refer Microsoft Docs contents or "[Azure の最新機能で IoT を改め
 - Deploy IoT Hub.
     - Create message route for d2c message
     - Create message route for device twins update
-- Clone https://github.com/kae-made/domain-model-csharp-azure-digital-twins-adaptor
-- Deploy ReceiveD2CToTwinGraph
-    - Bind to d2c message route.
-    - This function operates Twin Graph so access permissions to Twin Graph must be granted
-- Deploy ReceiveReportedPropertiesToTwinGraph
-    - Bind to device twins update message route
-    - This function operates Twin Graph so access permissions to Twin Graph must be granted
-- Build DomainModelExecutor and TelemetryNotified and deploy them
-    - Open AzureDigitalTwinsAdaptorForCsharpFramework.sln
-    - Add generated Domain Model C# library project as project reference 
-    - Deploy DomainModelExecutor
-    - Deploy TelemetryNotified
+- Clone https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework
+- Open [AzureDigitalTwinsAdaptorForCsharpFramework.sln](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/AzureDigitalTwinsAdaptorForCsharpFramework.sln)
+    - Deploy [AzureIoTHubBinder project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder/Kae.DomainMode.Csharp.AzureDigitalTwins.AzureIoTHubBinder.csproj)
+    - Configure ReceiveD2CToTwinGraph
+        - Bind to d2c message route.
+        - This function operates Twin Graph so access permissions to Twin Graph must be granted
+    - Configure ReceiveReportedPropertiesToTwinGraph
+        - Bind to device twins update message route
+        - This function operates Twin Graph so access permissions to Twin Graph must be granted
+    - Build/Deploy DomainModelExecutor, TelemetryNotified and Web Application frontend
+        - Open AzureDigitalTwinsAdaptorForCsharpFramework.sln
+        - Add generated Domain Model C# library project as project reference to the [AzureDigitalTwinsAdaptorForCsharpFramework project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/AzureDigitalTwinsAdaptorForCsharpFramework/Kae.DomainModel.CSharp.Utility.Application.AzureDigitalTwinsFunction.csproj).
+        - Deploy [AzureDigitalTwinsAdaptorForCsharpFramework project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/AzureDigitalTwinsAdaptorForCsharpFramework/Kae.DomainModel.CSharp.Utility.Application.AzureDigitalTwinsFunction.csproj).
+        - Add generated Domain Model C# library project as project reference to the [WebAPIAppViewerForADT project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/WebAPIAppViewerForADT/Kae.DomainModel.CSharp.Utility.Application.WebAPIAppDomainModelViewerForADT.csproj).
+        - Deploy [WebAPIAppViewerForADT project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/WebAPIAppViewerForADT/Kae.DomainModel.CSharp.Utility.Application.WebAPIAppDomainModelViewerForADT.csproj).
+    - Configure access mode of Azure Digital Twins for both deployed projects.
+    - Deploy TimerService for Domain Model's delay events
+        - Deploy [AzureDigitalTwins.Timer project](https://github.com/kae-made/-domain-model-csharp-azure-digital-twins-iot-hub-framework/blob/main/Kae.DomainModel.Csharp.AzureDigitalTwins.Timer/Kae.DomainModel.Csharp.AzureDigitalTwins.Timer.csproj).
+        - Configure access mode of Azure Digital Twins for the project.
 
